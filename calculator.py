@@ -20,26 +20,24 @@ def divide(a, b):
     return a / b
 
 
-def calculate():
+def on_button_click(value):
+    current_text = entry.get()
+    entry.delete(0, tk.END)
+    entry.insert(0, current_text + value)
+
+
+def on_clear():
+    entry.delete(0, tk.END)
+
+
+def on_calculate():
     try:
-        a = float(entry1.get())
-        b = float(entry2.get())
-        operation = operation_var.get()
-
-        if operation == "Add":
-            result = add(a, b)
-        elif operation == "Subtract":
-            result = subtract(a, b)
-        elif operation == "Multiply":
-            result = multiply(a, b)
-        elif operation == "Divide":
-            result = divide(a, b)
-        else:
-            result = "Error: Invalid operation"
-
-        result_label.config(text=f"Result: {result}")
-    except ValueError:
-        messagebox.showerror("Input Error", "Please enter valid numbers")
+        expression = entry.get()
+        result = eval(expression)
+        entry.delete(0, tk.END)
+        entry.insert(0, str(result))
+    except Exception as e:
+        messagebox.showerror("Error", str(e))
 
 
 # Create the main window
@@ -47,26 +45,31 @@ root = tk.Tk()
 root.title("Calculator")
 
 # Create and place the widgets
-tk.Label(root, text="First Number:").grid(row=0, column=0)
-entry1 = tk.Entry(root)
-entry1.grid(row=0, column=1)
+entry = tk.Entry(root, width=16, font=("Arial", 24), borderwidth=2, relief="solid")
+entry.grid(row=0, column=0, columnspan=4)
 
-tk.Label(root, text="Second Number:").grid(row=1, column=0)
-entry2 = tk.Entry(root)
-entry2.grid(row=1, column=1)
+# fmt: off
+buttons = [
+    "7", "8", "9", "/",
+    "4", "5", "6", "*",
+    "1", "2", "3", "-",
+    "0", ".", "=", "+"
+]
+# fmt: on
 
-operation_var = tk.StringVar(root)
-operation_var.set("Add")
-operations_menu = tk.OptionMenu(
-    root, operation_var, "Add", "Subtract", "Multiply", "Divide"
-)
-operations_menu.grid(row=2, column=0, columnspan=2)
+row = 1
+col = 0
+for button in buttons:
+    action = lambda x=button: on_button_click(x) if x != "=" else on_calculate()
+    tk.Button(root, text=button, width=5, height=2, command=action).grid(
+        row=row, column=col
+    )
+    col += 1
+    if col > 3:
+        col = 0
+        row += 1
 
-calculate_button = tk.Button(root, text="Calculate", command=calculate)
-calculate_button.grid(row=3, column=0, columnspan=2)
-
-result_label = tk.Label(root, text="Result: ")
-result_label.grid(row=4, column=0, columnspan=2)
+tk.Button(root, text="C", width=5, height=2, command=on_clear).grid(row=row, column=col)
 
 # Run the application
 root.mainloop()
