@@ -1,3 +1,4 @@
+from tkinter import ttk
 import tkinter as tk
 from tkinter import messagebox
 
@@ -43,9 +44,14 @@ def on_calculate():
 # Create the main window
 root = tk.Tk()
 root.title("Calculator")
+style = ttk.Style()
+style.configure(
+    "TButton", padding=(6, 6), relief="flat", background="#ccc", height=50, width=50
+)
+# style.theme_use("aqua")
 
-# Create and place the widgets
-entry = tk.Entry(root, width=16, font=("Arial", 24), borderwidth=2, relief="solid")
+# Create and place the widget
+entry = ttk.Entry(root, width=16, font=("Arial", 24))
 entry.grid(row=0, column=0, columnspan=4)
 
 # fmt: off
@@ -60,16 +66,24 @@ buttons = [
 row = 1
 col = 0
 for button in buttons:
-    action = lambda x=button: on_button_click(x) if x != "=" else on_calculate()
-    tk.Button(root, text=button, width=5, height=2, command=action).grid(
-        row=row, column=col
+
+    def action(x=button):
+        if x != "=":
+            on_button_click(x)
+        else:
+            on_calculate()
+
+    ttk.Button(root, text=button, width=5, style="TButton", command=action).grid(
+        row=row, column=col, rowspan=2
     )
     col += 1
     if col > 3:
         col = 0
-        row += 1
+        row += 2
 
-tk.Button(root, text="C", width=5, height=2, command=on_clear).grid(row=row, column=col)
+ttk.Button(root, text="C", width=5, style="TButton", command=on_clear).grid(
+    row=row, column=col
+)
 
 # Run the application
 root.mainloop()
