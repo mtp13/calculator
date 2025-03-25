@@ -43,6 +43,7 @@ def on_calculate():
 root = tk.Tk()
 root.title("Calculator")
 style = ttk.Style()
+style.theme_use("alt")
 style.configure(
     "TButton", padding=(6, 6), relief="flat", background="#ccc", height=50, width=50
 )
