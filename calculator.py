@@ -41,16 +41,13 @@ def on_calculate():
         messagebox.showerror("Error", str(e))
 
 
-# Create the main window
 root = tk.Tk()
 root.title("Calculator")
 style = ttk.Style()
 style.configure(
     "TButton", padding=(6, 6), relief="flat", background="#ccc", height=50, width=50
 )
-# style.theme_use("aqua")
 
-# Create and place the widget
 entry = ttk.Entry(root, width=16, font=("Arial", 24))
 entry.grid(row=0, column=0, columnspan=4)
 
@@ -85,5 +82,4 @@ ttk.Button(root, text="C", width=5, style="TButton", command=on_clear).grid(
     row=row, column=col
 )
 
-# Run the application
 root.mainloop()
