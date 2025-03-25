@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox, ttk
-import operator
+import operations
 
 
 def on_button_click(value):
@@ -25,10 +25,10 @@ def on_calculate():
 
 def evaluate_expression(expression):
     operators = {
-        "+": operator.add,
-        "-": operator.sub,
-        "*": operator.mul,
-        "/": operator.truediv,
+        "+": operations.add,
+        "-": operations.subtract,
+        "*": operations.multiply,
+        "/": operations.divide,
     }
     stack = []
     current_number = ""
