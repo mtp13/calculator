@@ -1,6 +1,5 @@
-from tkinter import ttk
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import messagebox, ttk
 
 
 def add(a, b):
