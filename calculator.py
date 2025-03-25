@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox, ttk
-# from operations import add, subtract, multiply, divide
+import operator
 
 
 def on_button_click(value):
@@ -16,11 +16,40 @@ def on_clear():
 def on_calculate():
     try:
         expression = entry.get()
-        result = eval(expression)
+        result = evaluate_expression(expression)
         entry.delete(0, tk.END)
         entry.insert(0, str(result))
     except Exception as e:
         messagebox.showerror("Error", str(e))
+
+
+def evaluate_expression(expression):
+    operators = {
+        "+": operator.add,
+        "-": operator.sub,
+        "*": operator.mul,
+        "/": operator.truediv,
+    }
+    stack = []
+    current_number = ""
+    current_operator = "+"
+    for char in expression:
+        if char in operators:
+            stack.append(float(current_number))
+            current_number = ""
+            current_operator = char
+        else:
+            current_number += char
+    stack.append(float(current_number))
+    result = 0
+    for i in range(0, len(stack), 2):
+        number = stack[i]
+        if i > 0:
+            operator_fn = operators[current_operator]
+            result = operator_fn(result, number)
+        else:
+            result = number
+    return result
 
 
 root = tk.Tk()
